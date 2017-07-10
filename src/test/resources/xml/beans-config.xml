@@ -1,0 +1,12 @@
+<beans>
+    <bean name="battery" type="language.reflect.rivet.model.Battery">
+        <cons-param name="name" type="java.lang.String" value="Amaron" />
+        <cons-param name="chargeLeft" type="java.lang.Double" value="42.0" />
+    </bean>
+
+    <bean name="tesla" type="language.reflect.rivet.model.ElectricCar">
+        <setter-param name="name" type="java.lang.String" value="Tesla" />
+    </bean>
+
+    <bean name="compactEV" type="language.reflect.rivet.model.ElectricCar" />
+</beans>
