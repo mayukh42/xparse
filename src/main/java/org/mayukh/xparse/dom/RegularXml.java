@@ -55,15 +55,24 @@ public class RegularXml extends XmlElement {
         return endTag;
     }
 
-
     public List<XmlElement> getChildren() {
         return children;
     }
 
     @Override
     public String toString() {
-        if (children != null)
-            return startTag + "\n" + children + "\n" + endTag;
-        else return startTag + value + endTag;
+        StringBuilder builder = new StringBuilder();
+        builder.append(startTag.toString());
+        if (children == null) {
+            // string literal
+            builder.append(value != null ? value : "");
+        }
+        else {
+            // nested XML
+            for (XmlElement child : children)
+                builder.append(child.toString());
+        }
+        builder.append(endTag.toString());
+        return builder.toString();
     }
 }

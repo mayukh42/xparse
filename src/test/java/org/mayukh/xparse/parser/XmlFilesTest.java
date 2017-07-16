@@ -73,4 +73,9 @@ public class XmlFilesTest {
     public void parseGarments() {
         parseXmlFile("garments.xml");
     }
+
+    @Test
+    public void parseBeans() {
+        parseXmlFile("beans-config.xml");
+    }
 }

@@ -7,7 +7,12 @@ import java.util.Map;
  */
 public class StartTag extends XmlTag {
 
-    StartTag(String name, Map<String, String> attributes) {
+    public StartTag(String name) {
+        super(name);
+        this.attributes = null;
+    }
+
+    public StartTag(String name, Map<String, String> attributes) {
         super(name);
         this.attributes = attributes;
     }
@@ -16,7 +21,7 @@ public class StartTag extends XmlTag {
 
     // rolling add
     public void addAttribute(String key, String value) {
-        if (key != null) attributes.put(key, value);
+        if (attributes != null && key != null) attributes.put(key, value);
     }
 
     public Map<String, String> getAttributes() {
@@ -25,6 +30,15 @@ public class StartTag extends XmlTag {
 
     @Override
     public String toString() {
-        return "<" + name + " " + attributes + " >";
+        StringBuilder builder = new StringBuilder();
+        builder.append('<').append(name);
+        if (attributes != null) {
+            builder.append(' ');
+            for (String key : attributes.keySet())
+                builder.append(key).append("=\"").append(attributes.get(key)).append("\" ");
+            builder.replace(builder.length()-1, builder.length(), "");
+        }
+        builder.append('>');
+        return builder.toString();
     }
 }

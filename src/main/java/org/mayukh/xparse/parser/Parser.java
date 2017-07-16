@@ -37,7 +37,7 @@ public class Parser {
                 state = null;
                 i += 3;
             }
-            else if (state == null) {
+            else if (state == null && c != '\r' && c != '\n' && c != '\t') {
                 processed.append(c);
                 i++;
             }
@@ -134,7 +134,6 @@ public class Parser {
         Deque<XmlElement> domTree = new LinkedList<>();
         Deque<Integer> startPos = new LinkedList<>();
 
-        System.out.println("Processed string: \n" + data);
         XmlElement root = null;
         for (int i = 0; i < data.length(); ) {
             char c = data.charAt(i);
@@ -202,7 +201,7 @@ public class Parser {
                     parent.addChild(current);
                 }
             }
-            else if (Objects.equals(Tag.OPEN, mode.peek()) && isAllowedLiteral(c)) {
+            else if (Objects.equals(Tag.OPEN, mode.peek()) && isStringLiteral(c)) {
                 /* String between start and end tags. mode.isEmpty is checked for corner case of a literal input
                     An allowed char literal can start a string literal when mode is OPEN.
                  */
@@ -210,7 +209,7 @@ public class Parser {
                 i++;
                 mode.push(Tag.VALUE);
             }
-            else if (Objects.equals(Tag.VALUE, mode.peek()) && (isAllowedLiteral(c) || isWhiteSpace(c))) {
+            else if (Objects.equals(Tag.VALUE, mode.peek()) && (isStringLiteral(c) || isWhiteSpace(c))) {
                 // white space is allowed in literal values
                 i++;
             }
@@ -240,11 +239,16 @@ public class Parser {
      * Allowed chars in string literals
      *  [0-9A-Za-z+*.-_]
      */
-    private static boolean isAllowedLiteral(char c) {
+    private static boolean isStringLiteral(char c) {
+        return  isTagLiteral(c) ||
+                (c == '+' || c == '*' || c == '.' || c == '-'); // separators and wildcards
+    }
+
+    private static boolean isTagLiteral(char c) {
         return  (c >= '0' && c <= '9') ||   // numbers
                 (c >= 'A' && c <= 'Z') ||   // upper case
                 (c >= 'a' && c <= 'z') ||   // lower case
-                (c == '+' || c == '*' || c == '.' || c == '-' || c == '_'); // separators and wildcards
+                (c == '_');
     }
 
     private static boolean isWhiteSpace(char c) {

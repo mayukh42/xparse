@@ -2,6 +2,8 @@ package org.mayukh.xparse.dom;
 
 import org.mayukh.xparse.parser.StartTag;
 
+import java.util.Map;
+
 /**
  * Created by mayukh42 on 6/13/2017.
  *
@@ -15,7 +17,9 @@ public class InlineXml extends XmlElement {
 
     @Override
     public String toString() {
-        String inlineStr = startTag.toString();
-        return inlineStr + " (inline)" ;
+        StringBuilder builder = new StringBuilder();
+        builder.append(startTag.toString());
+        builder.replace(builder.length()-1, builder.length(), " />");
+        return builder.toString();
     }
 }

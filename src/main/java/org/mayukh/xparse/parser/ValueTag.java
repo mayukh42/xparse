@@ -7,7 +7,7 @@ package org.mayukh.xparse.parser;
  */
 public class ValueTag extends XmlTag {
 
-    ValueTag(String name) {
+    public ValueTag(String name) {
         super(name);
     }
 

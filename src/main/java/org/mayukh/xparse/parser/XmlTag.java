@@ -10,7 +10,7 @@ public abstract class XmlTag {
 
     protected String name;
 
-    XmlTag(String name) {
+    public XmlTag(String name) {
         this.name = name;
     }
 
